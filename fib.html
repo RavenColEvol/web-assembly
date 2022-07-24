@@ -1,0 +1,16 @@
+<textarea id="output" style="height: 100%; width: 100%" readonly></textarea>
+<script type="module">
+    const importObject = {
+        imports: {  }
+    };
+    fetch('fib.wasm')
+        .then(res => res.arrayBuffer())
+        .then(bytes => WebAssembly.instantiate(bytes, importObject))
+        .then(res => {
+            for(let i = 1; i <= 15; i++) {
+                const result = res.instance.exports.fib(i);
+                document.getElementById('output').value += `fib(${i}) = ${result}\n`;
+            }
+        })
+        .catch(err => console.log('err', err));
+</script>
